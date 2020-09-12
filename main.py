@@ -4,7 +4,7 @@ from flask import jsonify, render_template, request
 from enigne import predict_sentiment
 
 app = flask.Flask(__name__)
-app.config["DEBUG"] = True
+app.config["DEBUG"] = False
 
 
 @app.route("/", methods=["GET"])
