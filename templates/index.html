@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Anyesh | Sentiment Classifier</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='swatch.css') }}"
+    />
+    <style type="text/css">
+      #pos-output,
+      #neg-output {
+        display: none;
+      }
+      .img-md {
+        width: 45%;
+      }
+
+      @media only screen and (max-width: 760px) {
+        .img-md {
+            width: 100%;
+        }
+      }
+    </style>
+ <meta name="robots" content="all" />
+ <meta
+   name="keywords"
+   content="sentiment analysis, sentiment classifier"
+ />
+
+ <meta
+   name="description"
+   content="A simple yet powerful sentiment classifier."
+ />
+ <meta name="theme-color" content="#ffb347" />
+
+ <meta name="Abstract" content="Sentiment Classifier" />
+ <meta name="Subject" content="Sentiment Classifier" />
+ <meta name="robots" content="Index, Follow" />
+ <meta name="alexa" content="100" />
+ <meta name="robots" content="NOODP" />
+ <meta name="googlebot" content="NOODP, Follow" />
+ <meta name="author" content="Anyesh" />
+ <meta name="rating" content="general" />
+ <meta name="Language" content="english" />
+ <meta name="copyright" content="Copyright 2019" />
+ <meta name="Designer" content="Anyesh" />
+ <meta name="Distribution" content="Global" />
+ <meta
+   property="article:publisher"
+   content="https://anyesh.github.io"
+ />
+ <meta name="apple-touch-fullscreen" content="YES" />
+ <meta name="language" content="en-uk, english" />
+
+ <!-- Open Graph data -->
+
+ <meta property="og:type" content="website" />
+ <meta property="og:locale" content="en_us" />
+ <meta property="og:url" content="https://anyesh.github.io" />
+ <meta property="og:title" content="Sentiment classifier" />
+ <meta
+   property="og:description"
+   content="A simple yet powerful sentiment classifier."
+ />
+ <meta property="og:image" content="{{ url_for('static', filename='assets/2634805.jpg') }}" />
+ <meta property="og:image:type" content="image/jpeg" />
+ <meta property="og:image:width" content="1741" />
+ <meta property="og:image:height" content="1979" />
+ <meta property="og:site_name" content="Sentiment Classifier" />
+
+ <!-- Schema.org markup for Google+ -->
+ <!-- Twitter Card data -->
+ <meta name="twitter:card" content="summary" />
+ <meta name="twitter:site" content="@anyesh" />
+ <meta
+   name="twitter:title"
+   content="A simple yet powerful sentiment classifier"
+ />
+ <meta name="twitter:description" content="Sentiment classifier" />
+ <meta
+   name="twitter:image"
+   content="{{ url_for('static', filename='assets/2634805.jpg') }}"
+ />
+
+   
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <img
+          src="{{ url_for('static', filename='assets/59076.png') }}"
+          alt=""
+          class="img-responsive mx-auto img-md"
+        />
+      </div>
+      <div class="jumbotron mt-2 col-lg-8 mx-auto p-3">
+        <h1>Sentiment Classifier</h1>
+        <p>
+               
+          <div id="pos-output">
+              <div class="alert alert-dismissible alert-success">
+                <strong>Yayy!</strong> Sentiment for given input is <strong class="text-dark">Positive</strong> with score <strong id="pos-score" class="text-dark">0.0</strong></a>.
+              </div>
+          </div>
+          <div id="neg-output">
+              <div class="alert alert-dismissible alert-danger">
+                <strong>Ohh!</strong> Sentiment for given input is <strong class="text-dark">Negative</strong> with score <strong id="neg-score" class="text-dark">0..0</strong></a>.
+              </div>
+          </div>
+        </p>
+
+        <hr class="my-4" />
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label>Enter your text classify:</label>
+
+            <textarea class="form-control" id="text"></textarea>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-block btn-success" type="submit" id="btn">
+              Classify
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script type="text/javascript">
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        text = document.querySelector("#text").value;
+        btn = document.querySelector("#btn");
+        pos_output = document.querySelector("#pos-output");
+
+        pos_score = document.querySelector("#pos-score");
+        neg_score = document.querySelector("#neg-score");
+        neg_output = document.querySelector("#neg-output");
+        btn.disabled = true;
+        btn.innerHTML = "Loading..."
+
+        if (text == "") {
+          alert("Invalid data");
+          btn.disabled = false;
+          btn.innerHTML = "Classify"
+ 
+          return false;
+        }
+        const data = { text: text };
+        fetch("/api/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(text),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+           
+            btn.disabled = false;
+            btn.innerHTML = "Classify"
+
+            if (data.status === "POSITIVE") {
+              pos_output.style.display = "block";
+              neg_output.style.display = "none";
+              pos_score.innerHTML = data.prediction_score;
+            } else {
+              pos_output.style.display = "none";
+              neg_output.style.display = "block";
+              neg_score.innerHTML = data.prediction_score;
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            btn.disabled = false;
+            btn.innerHTML = "Classify"
+
+          });
+      };
+    </script>
+  </body>
+</html>
