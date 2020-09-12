@@ -21,6 +21,7 @@ def predict():
         end_time = time.time() - start_time
         # prediction = 0.9
     except Exception as e:
+        print(e)
         return jsonify({"invalid": "invalid request.."})
     return jsonify(
         {

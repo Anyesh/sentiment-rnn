@@ -10,7 +10,7 @@ class SentimentClassifier(nn.Module):
 
         self.bert = BertModel.from_pretrained("bert-base-uncased")
 
-        embedding_dim = bert.config.to_dict()["hidden_size"]
+        embedding_dim = self.bert.config.to_dict()["hidden_size"]
 
         self.rnn = nn.GRU(
             embedding_dim,
