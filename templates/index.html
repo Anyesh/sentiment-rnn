@@ -135,6 +135,10 @@
         neg_score = document.querySelector("#neg-score");
         neg_output = document.querySelector("#neg-output");
         btn.disabled = true;
+
+        neg_output.style.display = "none";
+        pos_output.style.display = "none";
+        
         btn.innerHTML = "Loading..."
 
         if (text == "") {

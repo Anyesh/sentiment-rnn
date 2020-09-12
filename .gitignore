@@ -8,3 +8,5 @@ archive/**
 .vscode/**
 checkpoints/**
 wandb/**
+
+bert-uncased/**
