@@ -8,5 +8,5 @@ archive/**
 .vscode/**
 checkpoints/**
 wandb/**
-
+.pytest_cache/**
 bert-uncased/**
